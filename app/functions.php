@@ -2,14 +2,18 @@
 
 include 'db.php';
 
+// Функция для генерации barcode
 function generateBarcode() {
 	return rand(10000000, 99999999);
 }
 
+// Функция для реализации бронирования заказа
 function bookOrder($event_id, $event_date, $ticket_adult_price, $ticket_adult_quantity, $ticket_kid_price, $ticket_kid_quantity) {
+	// Подключаемся к бд и получаем barcode
 	$db = getConnection();
 	$barcode = generateBarcode();
 
+	// Реализуем бронирование, избегая случаев, чтобы было 2 заказа с одинаковым barcode
 	while (true) {
 			$apiBookResponse = apiBook($event_id, $event_date, $ticket_adult_price, $ticket_adult_quantity, $ticket_kid_price, $ticket_kid_quantity, $barcode);
 
@@ -46,7 +50,7 @@ function bookOrder($event_id, $event_date, $ticket_adult_price, $ticket_adult_qu
 	}
 }
 
-
+// Функция для ответа на бронь заказа
 function apiBook($event_id, $event_date, $ticket_adult_price, $ticket_adult_quantity, $ticket_kid_price, $ticket_kid_quantity, $barcode) {
 	$responses = [
 		['message' => 'order successfully booked'],
@@ -56,6 +60,7 @@ function apiBook($event_id, $event_date, $ticket_adult_price, $ticket_adult_quan
 	return $responses[array_rand($responses)];
 }
 
+// Функция для ответа на подтверждения брони заказа
 function apiApprove($barcode) {
 	$responses = [
 			['message' => 'order successfully approved'],

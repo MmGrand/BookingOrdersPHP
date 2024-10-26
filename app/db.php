@@ -1,7 +1,8 @@
 <?php
 
 	function getConnection() {
-		$host = 'MySQL-8.2';
+		// Изменить настройки подключения под себя
+		$host = 'localhost';
 		$db = 'nevatrip';
 		$user = 'root';
 		$pass = '';
@@ -15,6 +16,7 @@
 			PDO::ATTR_EMULATE_PREPARES => false
 		];
 
+		// Подключение к базе данных через PDO
 		try {
 			return new PDO($dsn, $user, $pass, $options);
 		} catch (\PDOException $e) {
